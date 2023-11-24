@@ -1,5 +1,5 @@
-<img width="1437" alt="Снимок экрана 2023-11-15 в 13 38 20" src="https://github.com/VicGayday/vue-to-do-list/assets/61756803/9cdeb110-b8d0-4454-987e-654661f5cdf7">
-<img width="1437" alt="Снимок экрана 2023-11-15 в 13 38 28" src="https://github.com/VicGayday/vue-to-do-list/assets/61756803/c6f13f6c-7d0f-46b7-8e1c-75b2ab2f41c6">
+<img width="1437" alt="Снимок экрана 2023-11-24 в 13 18 07" src="https://github.com/VicGayday/vue-to-do-list/assets/61756803/0765e88b-bc8e-4a9f-ba5e-94c425d16c9b">
+<img width="1437" alt="Снимок экрана 2023-11-24 в 13 18 18" src="https://github.com/VicGayday/vue-to-do-list/assets/61756803/a1b39c4b-8dff-4ca6-b844-0194187ef39c">
 
 #vue-to-do-list
 
