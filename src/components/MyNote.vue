@@ -1,66 +1,93 @@
 <template>
   <div>
-    <h2 v-if="!isEditing" @click="edit">{{ note.title }}</h2>
-    <input v-else v-model="editedNote.title" type="text" />
-    <ul>
-      <todo-item v-for="todo in note.todos" :key="todo.id" :todo="todo" @edit="editTodo" />
+    <div class="first-wrapper">
+      <AppIcon name="folderIcon" />
+      <h2 class="h2" v-if="!isEditing">{{ note.title }}</h2>
+      <input
+        v-else
+        v-model="newTitle"
+        @blur="confirmEditing"
+        @keyup.enter="confirmEditing"
+      />
+
+      <button class="btn-small mrg" @click="startEditing">
+        <AppIcon name="editIcon" />
+      </button>
+      <button class="btn-small" @click="deleteNote">
+        <AppIcon name="trashIcon" />
+      </button>
+    </div>
+    <ul class="ul-wrapper">
+      <todo-item
+        v-for="todo in note.todos"
+        :key="todo.id"
+        :todo="todo"
+        @deleteTodo="deleteTodo"
+      />
     </ul>
-    <button v-if="!isEditing" @click="edit">Редактировать</button>
-    <button v-else @click="save">Сохранить</button>
-    <button v-if="!isEditing" @click="deleteNote">Удалить</button>
-    <button v-else @click="cancel">Отмена</button>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, reactive } from 'vue';
-import TodoItem from './TodoItem.vue';
+import { defineComponent, ref } from "vue"
+import TodoItem from "./TodoItem.vue"
+import AppIcon from "../ui/AppIcon.vue"
 
 export default defineComponent({
   components: {
-    TodoItem
+    TodoItem,
+    AppIcon,
   },
   props: {
     note: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props, { emit }) {
-    const isEditing = ref(false);
-    const editedNote = reactive({ ...props.note });
+    const isEditing = ref(false)
+    const newTitle = ref(props.note.title)
 
-    const edit = () => {
-      isEditing.value = true;
-    };
+    function deleteNote() {
+      const isDelete = confirm("Удалить?")
+      if (isDelete) {
+        emit("delete", props.note.id)
+      }
+    }
+    function deleteTodo(payload) {
+      emit("deleteTodo", payload, props.note.id)
+    }
 
-    const save = () => {
-      emit('edit', props.note.id, editedNote);
-      isEditing.value = false;
-    };
+    function confirmEditing() {
+      props.note.title = newTitle.value
+      emit("edit", props.note)
+      isEditing.value = false
+    }
 
-    const deleteNote = () => {
-      emit('delete', props.note.id);
-    };
-
-    const cancel = () => {
-      isEditing.value = false;
-    };
-
-    const editTodo = (todoId, newTodo) => {
-      const index = editedNote.todos.findIndex(todo => todo.id === todoId);
-      editedNote.todos.splice(index, 1, newTodo);
-    };
+    const startEditing = () => {
+      isEditing.value = true
+    }
 
     return {
-      isEditing,
-      editedNote,
-      edit,
-      save,
       deleteNote,
-      cancel,
-      editTodo
-    };
-  }
-});
+      deleteTodo,
+      startEditing,
+      isEditing,
+      newTitle,
+      confirmEditing,
+    }
+  },
+})
 </script>
+<style scoped>
+.first-wrapper {
+  margin-top: 20px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.mrg {
+  margin-left: auto;
+}
+</style>
